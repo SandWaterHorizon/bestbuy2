@@ -1,8 +1,5 @@
 # main.py
-import products
 import store
-
-
 import products
 
 # Initialize product list

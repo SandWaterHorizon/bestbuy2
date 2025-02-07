@@ -64,13 +64,6 @@ class Product:
         self.promotion = None  # Default is no promotion
 
 
-# class Product:
-#     def __init__(self, name: str, price: float, quantity: int):
-#         self.name = name
-#         self.price = price
-#         self.quantity = quantity
-#         self.promotion = None  # Default is no promotion
-
     def get_quantity(self):
         return self.quantity
 
@@ -103,24 +96,24 @@ class Product:
             return self.price * quantity
 
 
-class NonStockedProduct(Product):
-    def __init__(self, name: str, price: float):
-        super().__init__(name, price, quantity=0)  # Non-stocked products have 0 quantity
-
-    def buy(self, quantity: int) -> float:
-        if quantity <= 0:
-            raise ValueError("Quantity to buy must be greater than zero")
-        total_price = quantity * self.price
-        return total_price  # No need to reduce stock since it's non-stocked
-
-    def show(self) -> str:
-        return f"{self.name}, Price: {self.price} (Non-stocked product)"
-
-    def set_quantity(self, quantity: int):
-        raise ValueError("Cannot set quantity for non-stocked products.")
-
-    def is_active(self) -> bool:
-        return True  # Non-stocked products are always considered active
+# class NonStockedProduct(Product):
+#     def __init__(self, name: str, price: float):
+#         super().__init__(name, price, quantity=0)  # Non-stocked products have 0 quantity
+#
+#     def buy(self, quantity: int) -> float:
+#         if quantity <= 0:
+#             raise ValueError("Quantity to buy must be greater than zero")
+#         total_price = quantity * self.price
+#         return total_price  # No need to reduce stock since it's non-stocked
+#
+#     def show(self) -> str:
+#         return f"{self.name}, Price: {self.price} (Non-stocked product)"
+#
+#     def set_quantity(self, quantity: int):
+#         raise ValueError("Cannot set quantity for non-stocked products.")
+#
+#     def is_active(self) -> bool:
+#         return True  # Non-stocked products are always considered active
 
 
 class NonStockedProduct(Product):

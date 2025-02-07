@@ -3,6 +3,7 @@
 from products import Product, NonStockedProduct  # Assuming Product and NonStockedProduct class is in product.py
 
 
+
 class Store:
     """
     The Store class holds a collection of products and provides methods to
