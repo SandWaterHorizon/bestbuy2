@@ -2,7 +2,10 @@
 import products
 import store
 
-# Setup initial stock of inventory
+
+import products
+
+# Initialize product list
 product_list = [
     products.Product("MacBook Air M2", price=1450, quantity=100),
     products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
@@ -10,6 +13,62 @@ product_list = [
     products.NonStockedProduct("Windows License", price=125),
     products.LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
 ]
+
+# Create promotion catalog
+second_half_price = products.SecondHalfPrice("Second Half price!")
+third_one_free = products.ThirdOneFree("Third One Free!")
+thirty_percent = products.PercentDiscount("30% off!", percent=30)
+
+# Add promotions to products
+product_list[0].set_promotion(second_half_price)  # MacBook Air M2 gets second-half-price promotion
+product_list[1].set_promotion(third_one_free)  # Bose earbuds get third one free promotion
+product_list[3].set_promotion(thirty_percent)  # Windows license gets 30% discount
+
+# Test buying products with promotions
+for product in product_list:
+    print(product.show())  # Show product info, including promotion if exists
+
+    # Example buying quantities
+    try:
+        quantity_to_buy = 2 if isinstance(product, products.Product) else 1  # Adjust quantity for testing
+        total_price = product.buy(quantity_to_buy)
+        print(f"Total price for {quantity_to_buy} of {product.name}: ${total_price}")
+    except ValueError as e:
+        print(f"Error buying {product.name}: {e}")
+    print()  # Add a line break between product tests
+
+
+#
+#
+# # Setup initial stock of inventory
+# product_list = [
+#     products.Product("MacBook Air M2", price=1450, quantity=100),
+#     products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+#     products.Product("Google Pixel 7", price=500, quantity=250),
+#     products.NonStockedProduct("Windows License", price=125),  # Non-stocked product
+#     products.Product("Shipping", price=10, quantity=250)  # Example limited product
+# ]
+#
+# # Create promotion catalog
+# second_half_price = products.SecondHalfPrice("Second Half price!")
+# third_one_free = products.ThirdOneFree("Third One Free!")
+# thirty_percent = products.PercentDiscount("30% off!", percent=30)
+#
+# # Add promotions to products
+# product_list[0].set_promotion(second_half_price)
+# product_list[1].set_promotion(third_one_free)
+# product_list[3].set_promotion(thirty_percent)
+#
+#
+#
+# # # Setup initial stock of inventory
+# # product_list = [
+# #     products.Product("MacBook Air M2", price=1450, quantity=100),
+# #     products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+# #     products.Product("Google Pixel 7", price=500, quantity=250),
+# #     products.NonStockedProduct("Windows License", price=125),
+# #     products.LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
+# # ]
 
 best_buy = store.Store(product_list)
 
@@ -93,3 +152,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
