@@ -1,4 +1,4 @@
-
+# products.py
 class Product:
     """
     Class Specification
@@ -87,15 +87,34 @@ class Product:
         return total_price
 
 
-# Example Usage
-bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-mac = Product("MacBook Air M2", price=1450, quantity=100)
+class NonStockedProduct(Product):
+    def __init__(self, name: str, price: float):
+        super().__init__(name, price, quantity=0)  # Non-stocked products have 0 quantity
 
-print(bose)  # Bose QuietComfort Earbuds - $250 (500 available)
-print(bose.buy(50))  # 50 * 250 = 12500
-print(mac.buy(100))  # 100 * 1450 = 145000
-print(mac.is_active())  # False (since quantity reaches 0)
-print(bose.show())  # Bose QuietComfort Earbuds, Price: 250, Quantity: 450
+    def buy(self, quantity: int) -> float:
+        # Allow purchase of any quantity for non-stocked products
+        if quantity <= 0:
+            raise ValueError("Quantity to buy must be greater than zero")
+        total_price = quantity * self.price
+        return total_price  # No need to reduce stock since it's non-stocked
 
-bose.set_quantity(1000)
-print(bose.show())  # Bose QuietComfort Earbuds, Price: 250, Quantity: 1000
+    def show(self) -> str:
+        return f"{self.name}, Price: {self.price} (Non-stocked product)"
+
+    def set_quantity(self, quantity: int):
+        # Non-stocked products cannot have their quantity set
+        raise ValueError("Cannot set quantity for non-stocked products.")
+
+
+class LimitedProduct(Product):
+    def __init__(self, name: str, price: float, quantity: int, maximum: int):
+        super().__init__(name, price, quantity)
+        self.maximum = maximum
+
+    def buy(self, quantity: int) -> float:
+        if quantity > self.maximum:
+            raise ValueError(f"Cannot buy more than {self.maximum} at a time.")
+        return super().buy(quantity)
+
+    def show(self) -> str:
+        return f"{self.name}, Price: {self.price}, Max per order: {self.maximum}"

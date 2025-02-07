@@ -1,4 +1,6 @@
-from products import Product  # Assuming Product class is in product.py
+# store.py
+
+from products import Product, NonStockedProduct  # Assuming Product and NonStockedProduct class is in product.py
 
 
 class Store:
@@ -47,7 +49,10 @@ class Store:
         """
         total_price = 0.0
         for product, quantity in shopping_list:
-            total_price += product.buy(quantity)
+            if isinstance(product, NonStockedProduct):
+                total_price += product.buy(quantity)  # No stock check for non-stocked products
+            else:
+                total_price += product.buy(quantity)  # Standard stock checking for other products
         return total_price
 
 
@@ -56,9 +61,18 @@ if __name__ == "__main__":
         Product("MacBook Air M2", price=1450, quantity=100),
         Product("Bose QuietComfort Earbuds", price=250, quantity=500),
         Product("Google Pixel 7", price=500, quantity=250),
+        NonStockedProduct("Windows License", price=125),  # Non-stocked product added
     ]
 
     store = Store(product_list)
     products = store.get_all_products()
+
     print("Total Quantity in Store:", store.get_total_quantity())  # Output: Total quantity of all active products
-    print("Order Cost:", store.order([(products[0], 1), (products[1], 2)]))  # Processes an order
+    try:
+        print("Order Cost:", store.order([(products[0], 1), (products[1], 2), (products[3], 2)]))  # Processes an order with a non-stocked product
+    except ValueError as e:
+        print(f"Order failed: {e}")  # Catch and display any error
+
+
+
+
